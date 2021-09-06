@@ -9,7 +9,7 @@ groups.
 
 ```
 module "bitbucket_ips" {
-  source = "terra-mod/ip-addresses/bitbucket"
+  source = "calidae/ip-addresses/bitbucket"
 }
 
 resource "aws_security_group" "example" {
@@ -31,7 +31,7 @@ resource "aws_security_group" "example" {
 
 ```
 module "bitbucket_ips" {
-  source = "terra-mod/ip-addresses/bitbucket"
+  source = "calidae/ip-addresses/bitbucket"
 }
 
 data "aws_iam_policy_document" "example" {
