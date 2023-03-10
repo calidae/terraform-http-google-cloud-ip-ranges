@@ -1,6 +1,5 @@
-# Get the JSON list of IP Addresses from Bitbucket.
-data "http" "bitbucket_ips" {
-  url = "https://ip-ranges.atlassian.com/"
+data "http" "this" {
+  url = var.url
 
   request_headers = {
     "Accept" = "application/json"
@@ -8,13 +7,13 @@ data "http" "bitbucket_ips" {
 }
 
 locals {
-  ip_range = tolist(jsondecode(data.http.bitbucket_ips.response_body).items[*].cidr)
+  _prefixes = tolist(jsondecode(data.http.this.response_body).prefixes)
   ipv4_range = compact([
-    for cidr in local.ip_range :
-    replace(cidr, "/.*[:].*/", "")
+    for p in local._prefixes :
+    contains(keys(p), "ipv4Prefix") ? p.ipv4Prefix : null
   ])
   ipv6_range = compact([
-    for cidr in local.ip_range :
-    replace(cidr, "/.*[.].*/", "")
+    for p in local._prefixes :
+    contains(keys(p), "ipv6Prefix") ? p.ipv6Prefix : null
   ])
 }
